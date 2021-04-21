@@ -64,7 +64,7 @@ namespace Presentacion
         private void CargarDatos()
         {
            
-            TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
+            TextReader sr = new StreamReader(@"C:\Users\Default\AppData\Local\Temp\PalabrasConfirmadas.txt");
             string Keys = "",Values="";
             Keys = sr.ReadLine();
             Values = sr.ReadLine();
@@ -263,7 +263,7 @@ namespace Presentacion
         //ESCRIBE LA FACTURA SEGUN LAS PALABRAS QUE SE VAN CONFIRMANDO
         private void EscribirFactura(int fragmentosMostrados, string palabra_inicial)
         {
-            TextWriter sw = new StreamWriter("Facturas.txt",true);
+            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\Facturas.txt", true);
             if (fragmentosMostrados == 1)
             {
                 sw.Write("NIT: "+palabra_inicial + '\t' + '\t' + '\t');
@@ -292,7 +292,7 @@ namespace Presentacion
         //ESCRIBE UN SEPARADOR SENCILLO PARA MEJORAR LA LECTURA DE CADA FACTURA EN EL MONITOR
         private void EscribirFacturaSeparador()
         {
-            TextWriter sw = new StreamWriter("Facturas.txt", true);
+            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\Facturas.txt", true);
             
             
                 sw.WriteLine("=======================================");
@@ -305,7 +305,7 @@ namespace Presentacion
             char[] delimiterChars = { '.' };
             //img.png->nombre[0]=img;nombre[1]=png;
             string[] nombre = Nombre.Split(delimiterChars);
-            TextWriter sw = new StreamWriter("Facturas.txt", true);
+            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\Facturas.txt", true);
 
 
             sw.WriteLine("Factura: "+nombre[0]);
@@ -321,7 +321,7 @@ namespace Presentacion
         //ACTUALIZA EL ARCHIVO DE PALABRAS CONFIRMADAS
         private void Actualizar(int keyConfirmada,string valueConfirmado)
         {
-            TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt", true);
+            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\PalabrasConfirmadas.txt", true);
             sw.WriteLine(keyConfirmada);
             sw.WriteLine(valueConfirmado);
             sw.Close();

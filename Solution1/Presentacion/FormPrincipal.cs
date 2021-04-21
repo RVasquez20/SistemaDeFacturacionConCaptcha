@@ -39,7 +39,7 @@ namespace Presentacion
              * Condicion que comprueba si el archivo existe
              * sino lo crea e inserta datos iniciales
              */
-            if (!File.Exists("PalabrasConfirmadas.txt"))
+            if (!File.Exists(@"C:\Users\Default\AppData\Local\Temp\PalabrasConfirmadas.txt"))
             {
                 GeneraDatos();
             }
@@ -47,7 +47,7 @@ namespace Presentacion
              * Condicion que comprueba si el archivo existe
              * sino lo crea
              */
-            if (!File.Exists("Facturas.txt"))
+            if (!File.Exists(@"C:\Users\Default\AppData\Local\Temp\Facturas.txt"))
             {
                 FactGen();
             }
@@ -71,7 +71,7 @@ namespace Presentacion
         palabras_confirmadasTemporal.Add(3, "Pan");
         palabras_confirmadasTemporal.Add(4, "Dulce");
             /*Se escriben las palabras iniciales en el archivo*/
-            TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt");
+            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\PalabrasConfirmadas.txt");
             for (int i = 1; i <= palabras_confirmadasTemporal.Count; i++)
             {
                 sw.WriteLine(i);
@@ -83,7 +83,7 @@ namespace Presentacion
         private void FactGen()
         {
            
-            TextWriter sw2 = new StreamWriter("Facturas.txt");
+            TextWriter sw2 = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\Facturas.txt");
 
             sw2.Close();
         }
