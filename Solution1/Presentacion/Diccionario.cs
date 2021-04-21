@@ -12,12 +12,17 @@ namespace Presentacion
     public partial class Diccionario : Form
     {
         //arroba--quitar los caracteres especialesc:
+        //VARIABLE QUE ALMACENA EL PATH DE LA FACTURA ELEGIDA
         string PATH = "";
         public Diccionario()
         {
             InitializeComponent();
+            //SE LE DA TITULO
+            label1.Text = "Subir Factura";
         }
-
+        //ABRE UN EXPLORADOR PARA SELECCIONAR UNA IMAGEN SOLO DE TIPO .JPG
+        //POSTERIORMENTE SE INICIALIZA EL CAPTCHA Y SE ENVIA EL NOMBRE DE LA IMAGEN ASI COMO UNA COLA DE LOS
+        //FRAGMENTOS DE LA IMAGEN A CONFIRMAR
         private void button1_Click(object sender, EventArgs e)
         {
             OpenFileDialog getImage = new OpenFileDialog();
@@ -29,8 +34,8 @@ namespace Presentacion
             {
                 //concatenacion de la ruta del archivo hacia el path para poder ir a cortar la imagen
                 PATH+= getImage.FileName;
-                MessageBox.Show(getImage.SafeFileName);
-                Captcha form2 = new Captcha(imagenes());
+               
+                Captcha form2 = new Captcha(imagenes(), getImage.SafeFileName);
                 form2.Show();
             }
             else
@@ -38,6 +43,7 @@ namespace Presentacion
                 MessageBox.Show("No se selecciono imagen", "Sin seleccion", MessageBoxButtons.OK,MessageBoxIcon.Exclamation);
             }
         }
+        //GENERA UN BITMAP DE IMAGENES 
         public static Bitmap CropImage(Bitmap source, Rectangle section)
         {
             Bitmap bmp = new Bitmap(section.Width, section.Height);
@@ -47,6 +53,7 @@ namespace Presentacion
 
             return bmp;
         }
+        //RECORTA LA IMAGEN EN CIERTA ALTURA Y ANCHO PARA CADA FRAGMENTO Y EL FRAGMENTO CORTADO LO GUARDA EN UNA COLA QUE SE RETORNA
         public Queue<Bitmap> imagenes()
         {
             //Cola-queue :v 
@@ -60,7 +67,7 @@ namespace Presentacion
            // MessageBox.Show(altoSteps.ToString()); esos dos no afectan va? xd
             //MessageBox.Show((source.Width / 200).ToString());
             //cambiar el 4 por altoSteps 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < altoSteps; i++)
             {
                 posXmin = 0;
                 for (int j = 0; j < (source.Width / 200); j++)
@@ -77,7 +84,7 @@ namespace Presentacion
             }
             return Lista;
         }
-
+        //CIERRA ESTE FORM
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();

@@ -16,6 +16,7 @@ namespace Presentacion
         public Form2()
         {
             InitializeComponent();
+            //LEE EL ARCHIVO PALABRAS CONFIRMADAS Y ALMACENA LOS DATOS EN UN OBJETO
             TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
             PalabrasConfirmadas PC = new PalabrasConfirmadas();
             PC.palabrasConfirmadas = new Hashtable();
@@ -31,7 +32,7 @@ namespace Presentacion
             sr.Close();
             string mensaje = "";
             textBox1.Text = "";
-
+            //SE MUESTRAN LOS DATOS DEL OBJETO EN UN TEXTBOX QUE ES EL MONITOR
             for (int i = 1; i <= PC.palabrasConfirmadas.Count; i++)
             {
                 mensaje += PC.palabrasConfirmadas[i].ToString() + Environment.NewLine;
@@ -39,12 +40,13 @@ namespace Presentacion
             textBox1.Text = mensaje;
             textBox1.ReadOnly = true;
         }
-
+        //CIERRA ESTE FORM
         private void button1_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
+        //ESCUCHA SIEMPRE SI HAY ALGUN CAMBIO EN EL ARCHIVO PALABRASCONFIRMADAS Y SE REALMACENA EN UN OBJETO
+        //POSTERIORMENTE ACTUALIZA EL TEXTBOX Y ASI SE CONSIGUE MOSTRARLO EN TIEMPO REAL
         private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
             TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
@@ -70,10 +72,10 @@ namespace Presentacion
              textBox1.Text = mensaje;
             
         }
-
+        //INDICAMOS DONDE ESTA ALMACENADO EL ARCHIVO QUE ESCUCHARA EL FILESYSTEMWATCHER
         private void Form2_Load(object sender, EventArgs e)
         {
-            fileSystemWatcher1.Path =  @"R:\Login C#\Nueva carpeta\Solution1\Presentacion\bin\Debug";
+            fileSystemWatcher1.Path = @"R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug";
         }
     }
 }

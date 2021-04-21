@@ -8,19 +8,89 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using System.IO;
+using System.Collections;
 namespace Presentacion
 {
     public partial class FormPrincipal : Form
     {
-        public FormPrincipal()
+        /**
+         * Hashtable que es el encargado de Generar y almacenar temporalmente las palabras confirmadas de un principio
+         * cuando el programa esta recien abierto y no se cuentan con registros
+         */
+        System.Collections.Hashtable palabras_confirmadasTemporal = new System.Collections.Hashtable();
+        /*Nombre: almacena el nombre de la factura seleccionada para poder escribirlo en los Registros*/
+        string Nombre = "",Rol="";
+        /**
+         * Funcion Principal en donde se recibe un parametro: Nombre DE Usuario para mostrarlo en este form
+         * ademas se comprueba si los archivos PalabrasConfirmadas.txt y Facturas existen , en dado caso
+         * que no se generan (PalabrasConfirmadas genera sus datos iniciales mientras que facturas solo se crea el archivo)
+         */
+        public FormPrincipal(string NombreUser, string rol)
         {
+            this.DoubleBuffered = true;
             InitializeComponent();
+            
+            Nombre = "";
+            Rol = "";
+            Rol = rol;
+            Nombre = NombreUser;
+            /**
+             * Condicion que comprueba si el archivo existe
+             * sino lo crea e inserta datos iniciales
+             */
+            if (!File.Exists("PalabrasConfirmadas.txt"))
+            {
+                GeneraDatos();
+            }
+            /**
+             * Condicion que comprueba si el archivo existe
+             * sino lo crea
+             */
+            if (!File.Exists("Facturas.txt"))
+            {
+                FactGen();
+            }
+            /*Se le saluda al usuario en el titulo del form*/
+            label1.Text = "Bienvenid@ " + Nombre;
+            /*Se coloca su nombre en el panel izquierdo donde se muestra mas info */
+            iconButton4.Text = Nombre;
+            //Si es empleado el boton de usuarios se le oculta
+            if (rol.Equals("Empleado"))
+            {
+                iconButton5.Visible = false;
+            }
         }
+        /*Funcion Encargada de Crear archivo PalabrasConfirmadas y llenarlo de datos iniciales
+         si es la primera vez que se ejecuta el programa*/
+        private void GeneraDatos()
+        {
+            /*se insertan datos a un arraylist llamado palabras_confirmadasTemporal */
+            palabras_confirmadasTemporal.Add(1, "Hola");
+        palabras_confirmadasTemporal.Add(2, "Mundo");
+        palabras_confirmadasTemporal.Add(3, "Pan");
+        palabras_confirmadasTemporal.Add(4, "Dulce");
+            /*Se escriben las palabras iniciales en el archivo*/
+            TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt");
+            for (int i = 1; i <= palabras_confirmadasTemporal.Count; i++)
+            {
+                sw.WriteLine(i);
+                sw.WriteLine(palabras_confirmadasTemporal[i].ToString());
+            }
+            sw.Close();
+        }
+        /*Funcion que Genera el archivo Facturas*/
+        private void FactGen()
+        {
+           
+            TextWriter sw2 = new StreamWriter("Facturas.txt");
 
+            sw2.Close();
+        }
+        /*Cuando cargue el form se settea esto en el titulo*/
         private void FormPrincipal_Load(object sender, EventArgs e)
         {
-
+            label1.Text = "Bienvenid@ " + Nombre;
         }
         #region Funcionalidades del formulario
         //RESIZE METODO PARA REDIMENCIONAR/CAMBIAR TAMAÑO A FORMULARIO EN TIEMPO DE EJECUCION ----------------------------------------------------------
@@ -80,17 +150,17 @@ namespace Presentacion
             sw = this.Size.Width;
             sh = this.Size.Height;
             btnMaximizar.Visible = false;
-            btnRestaurar. Visible = true;
+            btnRestaurar.Visible = true;
             this.Size = Screen.PrimaryScreen.WorkingArea.Size;
             this.Location = Screen.PrimaryScreen.WorkingArea.Location;
         }
-
+        //BOTON PARA RESTARURAR LA VENTANA
         private void btnRestaurar_Click(object sender, EventArgs e)
         {
-            btnMaximizar.Visible = true ;
+            btnMaximizar.Visible = true;
             btnRestaurar.Visible = false;
-            this.Size = new Size(sw,sh);
-            this.Location = new Point(lx,ly);
+            this.Size = new Size(sw, sh);
+            this.Location = new Point(lx, ly);
         }
 
         private void panelBarraTitulo_MouseMove(object sender, MouseEventArgs e)
@@ -107,35 +177,65 @@ namespace Presentacion
         //METODO PARA ARRASTRAR EL FORMULARIO---------------------------------------------------------------------
         [DllImport("user32.DLL", EntryPoint = "ReleaseCapture")]
         private extern static void ReleaseCapture();
+        
+       
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            AbrirFormulario<Diccionario>();
-            button1.BackColor = Color.FromArgb(12, 61, 92);
-        }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            AbrirFormulario<Form2>();
-            button2.BackColor = Color.FromArgb(12, 61, 92);
-        }
-
-        private void button3_Click(object sender, EventArgs e)
-        {
-            AbrirFormulario<Form3>();
-            button3.BackColor = Color.FromArgb(12, 61, 92);
-        }
 
         [DllImport("user32.DLL", EntryPoint = "SendMessage")]
         private extern static void SendMessage(System.IntPtr hWnd, int wMsg, int wParam, int lParam);
 
-        private void btnCerrar_sesion_Click(object sender, EventArgs e)
+        //EVENTO QUE DESPLIEGA EL FORMULARIO DE INGRESO DE FACTURAS
+
+        private void iconButton1_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario<Diccionario>();
+            label1.Text = "Subir Factura";
+            button1.BackColor = Color.FromArgb(12, 61, 92);
+        }
+        //EVENTO QUE DESPLIEGA EL FORMULARIO DE MONITOREO DE PALABRAS CONFIRMADAS
+        private void iconButton1_Click_1(object sender, EventArgs e)
+        {
+            AbrirFormulario<Form2>();
+            label1.Text = "Monitor De Palabras Confirmadas en tiempo Real";
+            iconButton1.BackColor = Color.FromArgb(12, 61, 92);
+        }
+        //EVENTO QUE DESPLIEGA EL FORMULARIO DE LAS FACTURAS EN TIEMPO REAL
+        private void iconButton2_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario<Form3>();
+            label1.Text = "Monitor de Facturas en tiempo Real";
+            iconButton2.BackColor = Color.FromArgb(12, 61, 92);
+        }
+        //EVENTO QUE DESPLIEGA EL FORMULARIO DE ADMINISTRACION DE ACCESO A LOS USUARIOS
+        private void iconButton5_Click(object sender, EventArgs e)
+        {
+            AbrirFormulario<Form1>();
+            label1.Text = "Administrar Acceso a Usuarios";
+            iconButton5.BackColor = Color.FromArgb(12, 61, 92);
+        }
+       
+        private void iconButton3_Click(object sender, EventArgs e)
         {
             this.Close();
         }
+
+        private void iconButton4_Click(object sender, EventArgs e)
+        {
+           
+                MessageBox.Show("Proyecto Programacion 3\n" 
+                                + "Hecho Por:\n"
+                                +"Kimberly Jemima Tomas Montes De Oca\n"
+                                + "Carnet:1290-19-11531", "Acerca del Programa");
+            
+            
+        }
+
+   
         #endregion
         //METODO PARA ABRIR FORMULARIOS DENTRO DEL PANEL
-        private void AbrirFormulario<MiForm>() where MiForm : Form, new() {
+        private void AbrirFormulario<MiForm>() where MiForm : Form, new()
+        {
             Form formulario;
             formulario = panelformularios.Controls.OfType<MiForm>().FirstOrDefault();//Busca en la colecion el formulario
             //si el formulario/instancia no existe
@@ -149,20 +249,39 @@ namespace Presentacion
                 panelformularios.Tag = formulario;
                 formulario.Show();
                 formulario.BringToFront();
-                formulario.FormClosed += new FormClosedEventHandler(CloseForms );
+                formulario.FormClosed += new FormClosedEventHandler(CloseForms);
             }
             //si el formulario/instancia existe
-            else {
+            else
+            {
                 formulario.BringToFront();
             }
         }
-        private void CloseForms(object sender,FormClosedEventArgs e) {
+        //PARA CERRAR LOS FORMS(INSTANCIAS)
+        private void CloseForms(object sender, FormClosedEventArgs e)
+        {
             if (Application.OpenForms["Diccionario"] == null)
+            {
                 button1.BackColor = Color.FromArgb(4, 41, 68);
+                label1.Text = "Bienvenid@ " + Nombre;
+            }
             if (Application.OpenForms["Form2"] == null)
-                button2.BackColor = Color.FromArgb(4, 41, 68);
+            {
+                iconButton1.BackColor = Color.FromArgb(4, 41, 68);
+                label1.Text = "Bienvenid@ " + Nombre;
+            }
             if (Application.OpenForms["Form3"] == null)
-                button3.BackColor = Color.FromArgb(4, 41, 68);
+            {
+                iconButton2.BackColor = Color.FromArgb(4, 41, 68);
+                label1.Text = "Bienvenid@ " + Nombre;
+
+            }
+            if (Application.OpenForms["Form1"] == null)
+            {
+                iconButton5.BackColor = Color.FromArgb(4, 41, 68);
+                label1.Text = "Bienvenid@ " + Nombre;
+
+            }
         }
     }
 }

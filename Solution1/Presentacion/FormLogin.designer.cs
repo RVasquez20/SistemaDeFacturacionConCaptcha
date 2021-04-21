@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormLogin));
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label2 = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.shapeContainer1 = new Microsoft.VisualBasic.PowerPacks.ShapeContainer();
             this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
@@ -41,7 +42,6 @@
             this.linkpass = new System.Windows.Forms.LinkLabel();
             this.btncerrar = new System.Windows.Forms.PictureBox();
             this.btnminimizar = new System.Windows.Forms.PictureBox();
-            this.label2 = new System.Windows.Forms.Label();
             this.lblErrorMessagge = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -60,6 +60,15 @@
             this.panel1.Size = new System.Drawing.Size(250, 330);
             this.panel1.TabIndex = 0;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            // 
+            // label2
+            // 
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(36, 190);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(180, 130);
+            this.label2.TabIndex = 1;
+            this.label2.Text = "Proyecto Final\r\nProgramacion 3\r\nKimberly Tomas";
             // 
             // pictureBox1
             // 
@@ -171,6 +180,7 @@
             this.linkpass.TabIndex = 0;
             this.linkpass.TabStop = true;
             this.linkpass.Text = "¿No tienes Cuenta? Registrate";
+            this.linkpass.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkpass_LinkClicked);
             // 
             // btncerrar
             // 
@@ -195,15 +205,6 @@
             this.btnminimizar.TabIndex = 8;
             this.btnminimizar.TabStop = false;
             this.btnminimizar.Click += new System.EventHandler(this.btnminimizar_Click);
-            // 
-            // label2
-            // 
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(36, 190);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(180, 130);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "Proyecto Final\r\nProgramacion 3\r\nKimberly Tomas";
             // 
             // lblErrorMessagge
             // 

@@ -10,7 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-
+using System.Threading;
+using System.Runtime.InteropServices;
+using System.Threading.Tasks;
 namespace Presentacion
 {
     public partial class Captcha : Form
@@ -19,7 +21,7 @@ namespace Presentacion
         
         string palabra_inicial="",palabra="",palabraConfirmada="",palabraIngresadaConfirmada="";
         //para los 3 intentos sistema
-        int intentos=3,aleatorio=0;
+        int intentos=3,aleatorio=0,FragmentosMostrados=0;
         System.Collections.Hashtable palabras_confirmadas = new System.Collections.Hashtable();
         //Dictionary<int, string> palabras_confirmadas = new Dictionary<int, string>();
             //guid=para que los archivos no sean iguales, segundos y fechas xd
@@ -27,17 +29,16 @@ namespace Presentacion
         ArrayList FragmentosConfirmados = new ArrayList();
                 
         //recibir cola con todos los fragmentos
-        public Captcha(Queue<Bitmap>Fragmentos)
+        public Captcha(Queue<Bitmap>Fragmentos,string NombreIMG)
         {
 
             InitializeComponent();
-            if (File.Exists("PalabrasConfirmadas.txt"))
-            {
 
-                CargarDatos();
-                } else {
-                GeneraDatos();
-            }
+            //CARGA LOS DATOS
+            CargarDatos();
+
+
+            //GENERA IMAGENES DE EL ARRAY DE PALABRAS CONFIRMADAS
             GenerarImagenes();
             //global para usarlo en eventos
             Fragmentos2 = Fragmentos;
@@ -45,12 +46,20 @@ namespace Presentacion
             pb_noconfirmado.Image = Fragmentos2.Dequeue();
             aleatorio = numerosAleatorios();
             pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+            FragmentosMostrados++;
             this.txt_noconfirmado.Focus();
-            
-            
+            //ESCRIBE EL NOMBRE DE LA IMAGEN COMO NOMBRE DE LA FACTURA
+            EscribirNombreDeFactura(NombreIMG);
 
+
+            //SE DA TAMAÑO A LA BARRA DE PROGRESO
+            progressBar1.Maximum = (Fragmentos.Count-1)*3;
+            progressBar1.Value = 0;
+            progressBar1.Visible = false;
 
         }
+
+        //CARGA LOS DATOS DEL ARCHIVO PALABRAS CONFIRMADAS PARA AGREGARLO AL HASHTABLE 
 
         private void CargarDatos()
         {
@@ -84,7 +93,7 @@ namespace Presentacion
         {
             return palabras_confirmadas.Count;
         }
-
+        //GENERA IMAGGENES APARTIR DE LAS PALABRAS CONFIRMADAS
         private void GenerarImagenes()
         {
             FragmentosConfirmados.Clear();
@@ -117,21 +126,7 @@ namespace Presentacion
         }
 
         //Genera los datos de palabras confirmadas si el archivo no existe
-        private void GeneraDatos()
-        {
-            
-            palabras_confirmadas.Add(1, "Hola");
-            palabras_confirmadas.Add(2, "Mundo");
-            palabras_confirmadas.Add(3, "Pan");
-            palabras_confirmadas.Add(4, "Dulce");
-            TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt");
-            for (int i = 1; i <= palabras_confirmadas.Count; i++)
-            {
-                sw.WriteLine(i);
-                sw.WriteLine(palabras_confirmadas[i].ToString());
-            }
-            sw.Close();
-        }
+        
 
 
         private void btn_comprobar_Click(object sender, EventArgs e)
@@ -160,7 +155,8 @@ namespace Presentacion
                     this.Invoke(new Action(() => {
                         pb_confirmado.Refresh();
                     }));
-                }
+                        lblErrorMessagge.Visible = false;
+                    }
                 else
                 {
                         aleatorio = numerosAleatorios();
@@ -169,9 +165,11 @@ namespace Presentacion
                             pb_confirmado.Refresh();
                         }));
                         txt_confirmado.Text = "";
-                        MessageBox.Show("Error... las palabras no coinciden, Inicie nuevamente 1");
+                        msgError("Error... las palabras no coinciden, Inicie nuevamente 1");
+                        
 
-                    intentos = 3;
+
+                        intentos = 3;
                 }
 
 
@@ -193,13 +191,14 @@ namespace Presentacion
                 }));
                 if (palabra_inicial.Equals(palabra) && confirmadaPalabra.Equals(txt_confirmado.Text))
                 {
+                        lblErrorMessagge.Visible = false;
                         txt_confirmado.Text = "";
                         intentos--;
                 }
                 else
                 {
                         txt_confirmado.Text = "";
-                        MessageBox.Show("Error... las palabras no coinciden, Inicie nuevamente ");
+                        msgError("Error... las palabras no coinciden, Inicie nuevamente ");
 
                     intentos = 3;
                 }
@@ -217,8 +216,10 @@ namespace Presentacion
                 txt_confirmado.Text = "";
 
             }
+
                 if (intentos == 0)//termina de confirmar palabra
                 {
+                lblErrorMessagge.Visible = false;
                 this.txt_noconfirmado.Focus();
                 string mensaje="";
                     MessageBox.Show("Palabra confirmada");
@@ -226,10 +227,8 @@ namespace Presentacion
                 KeyNueva = Keys();
                 palabras_confirmadas.Add(KeyNueva, palabra_inicial) ;
                 Actualizar(KeyNueva, palabra_inicial);
-                /*
-                 LLamar a la funcion que sobreescriba el archivo entero llamado palabras Confirmadas
-                 
-                 */
+                EscribirFactura(FragmentosMostrados,palabra_inicial);
+                FragmentosMostrados++;
                     for (int i=1;i<=palabras_confirmadas.Count;i++)
                     {
                         mensaje += "\n"+palabras_confirmadas[i].ToString();
@@ -245,11 +244,13 @@ namespace Presentacion
                             pb_noconfirmado.Refresh();
                         pb_confirmado.Refresh();
                         }));
-                        //se regresan los intentos por cada nueva palabra
-                        intentos = 3;
+                    progressBar1.Value += 1;
+                    //se regresan los intentos por cada nueva palabra
+                    intentos = 3;
                     }
                     else
                     {
+                    EscribirFacturaSeparador();
                         //cerrar formulario actual
                         this.Close();
                     }
@@ -259,12 +260,65 @@ namespace Presentacion
            
             
         }
+        //ESCRIBE LA FACTURA SEGUN LAS PALABRAS QUE SE VAN CONFIRMANDO
+        private void EscribirFactura(int fragmentosMostrados, string palabra_inicial)
+        {
+            TextWriter sw = new StreamWriter("Facturas.txt",true);
+            if (fragmentosMostrados == 1)
+            {
+                sw.Write("NIT: "+palabra_inicial + '\t' + '\t' + '\t');
+            }
+            else if(fragmentosMostrados == 2)
+            {
+                sw.WriteLine("Fecha: " + palabra_inicial);
+            }
+            else if (fragmentosMostrados%2==0)
+            {
+                sw.WriteLine("Cantidad: " + palabra_inicial);
+            }
+            else
+            {
+                sw.Write("Producto: " + palabra_inicial+'\t'+'\t'+'\t');
+            }
+            sw.Close();
+        }
 
+
+        //MINIMIZA EL FORM
+        private void btnminimizar_Click_1(object sender, EventArgs e)
+        {
+            this.WindowState = FormWindowState.Minimized;
+        }
+        //ESCRIBE UN SEPARADOR SENCILLO PARA MEJORAR LA LECTURA DE CADA FACTURA EN EL MONITOR
+        private void EscribirFacturaSeparador()
+        {
+            TextWriter sw = new StreamWriter("Facturas.txt", true);
+            
+            
+                sw.WriteLine("=======================================");
+           
+            sw.Close();
+        }
+        //QUITA LA EXTENSION DE LA IMAGEN Y ESCRIBE SOLO EL NOMBRE COMO NOMBRE DE FACTURA
+        private void EscribirNombreDeFactura(string Nombre)
+        {
+            char[] delimiterChars = { '.' };
+            //img.png->nombre[0]=img;nombre[1]=png;
+            string[] nombre = Nombre.Split(delimiterChars);
+            TextWriter sw = new StreamWriter("Facturas.txt", true);
+
+
+            sw.WriteLine("Factura: "+nombre[0]);
+
+            sw.Close();
+        }
+        //GENERADOR DE LLAVES PARA LAS PALABRAS CONFIRMADAS
         private int Keys()
         {
             return palabras_confirmadas.Count + 1;
             
         }
+        //ACTUALIZA EL ARCHIVO DE PALABRAS CONFIRMADAS
         private void Actualizar(int keyConfirmada,string valueConfirmado)
         {
             TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt", true);
@@ -272,6 +326,12 @@ namespace Presentacion
             sw.WriteLine(valueConfirmado);
             sw.Close();
         }
- 
+        //MUESTRA UN ERROR 
+        private void msgError(string msg)
+        {
+            lblErrorMessagge.Text = "      " + msg;
+            lblErrorMessagge.Visible = true;
+            
+        }
     }
 }
