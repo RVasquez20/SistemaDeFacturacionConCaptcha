@@ -18,7 +18,7 @@ namespace Presentacion
         {
             InitializeComponent();
             //DA UN TIPO DE TAMAÑO A LA IMAGEN
-            if (!File.Exists(@"C:\Users\Default\AppData\Local\Temp\Users.txt"))
+            if (!File.Exists("Users.txt"))
             {
                 GeneraDatosAdmin();
             }
@@ -27,7 +27,7 @@ namespace Presentacion
 
         private void GeneraDatosAdmin()
         {
-            TextWriter sw = new StreamWriter(@"C:\Users\Default\AppData\Local\Temp\Users.txt");
+            TextWriter sw = new StreamWriter("Users.txt");
             
                 sw.WriteLine("Ktomasm");
                 sw.WriteLine("admin");
@@ -149,7 +149,7 @@ namespace Presentacion
         private bool ExisteyActivo(string us, string pass)
         {
             Users obj1 = new Users();
-            TextReader sr = new StreamReader(@"C:\Users\Default\AppData\Local\Temp\Users.txt");
+            TextReader sr = new StreamReader("Users.txt");
             obj1.User = sr.ReadLine();
 
             while (obj1.User != null)
@@ -171,7 +171,7 @@ namespace Presentacion
         private string rol(string us, string pass)
         {
             Users obj1 = new Users();
-            TextReader sr = new StreamReader(@"C:\Users\Default\AppData\Local\Temp\Users.txt");
+            TextReader sr = new StreamReader("Users.txt");
             obj1.User = sr.ReadLine();
 
             while (obj1.User != null)
