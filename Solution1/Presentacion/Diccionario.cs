@@ -67,7 +67,7 @@ namespace Presentacion
            // MessageBox.Show(altoSteps.ToString()); esos dos no afectan va? xd
             //MessageBox.Show((source.Width / 200).ToString());
             //cambiar el 4 por altoSteps 
-            for (int i = 0; i < altoSteps; i++)
+            for (int i = 0; i <= altoSteps; i++)
             {
                 posXmin = 0;
                 for (int j = 0; j < (source.Width / 200); j++)

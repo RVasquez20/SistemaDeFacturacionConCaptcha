@@ -53,9 +53,8 @@ namespace Presentacion
 
 
             //SE DA TAMAÑO A LA BARRA DE PROGRESO
-            progressBar1.Maximum = (Fragmentos.Count-1)*3;
+            progressBar1.Maximum = (Fragmentos.Count)*3;
             progressBar1.Value = 0;
-            progressBar1.Visible = false;
 
         }
 
@@ -64,7 +63,7 @@ namespace Presentacion
         private void CargarDatos()
         {
            
-            TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "PalabrasConfirmadas.txt");
             string Keys = "",Values="";
             Keys = sr.ReadLine();
             Values = sr.ReadLine();
@@ -128,134 +127,156 @@ namespace Presentacion
         //Genera los datos de palabras confirmadas si el archivo no existe
         
 
-
-        private void btn_comprobar_Click(object sender, EventArgs e)
+        private bool validacion()
         {
-            //comprobacion 
-            //es como joptionpane, dialogo de confirmacion de si y nop
-            DialogResult dialogResult;
-            string confirmadaPalabra = "";
-            confirmadaPalabra = palabras_confirmadas[aleatorio + 1].ToString();
-            MessageBox.Show(confirmadaPalabra);
-            dialogResult = MessageBox.Show("Es esta la palabra que desea confirmar?..." + txt_noconfirmado.Text + " Y " + txt_confirmado.Text, "Confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
-        if(dialogResult == DialogResult.Yes) { 
-            if (intentos == 3)//pimer ntento
+            if (txt_confirmado.Text.Equals("") || txt_noconfirmado.Text.Equals(""))
             {
-                palabra_inicial = "";
-                palabra_inicial = txt_noconfirmado.Text;
-                txt_noconfirmado.Text = "";
-
-                if (confirmadaPalabra.Equals(txt_confirmado.Text))
-                {
-                        txt_confirmado.Text = "";
-                        intentos--;
-                    this.txt_noconfirmado.Focus();
-                    aleatorio = numerosAleatorios();
-                    this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
-                    this.Invoke(new Action(() => {
-                        pb_confirmado.Refresh();
-                    }));
-                        lblErrorMessagge.Visible = false;
-                    }
-                else
-                {
-                        aleatorio = numerosAleatorios();
-                        this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
-                        this.Invoke(new Action(() => {
-                            pb_confirmado.Refresh();
-                        }));
-                        txt_confirmado.Text = "";
-                        msgError("Error... las palabras no coinciden, Inicie nuevamente 1");
-                        
-
-
-                        intentos = 3;
-                }
-
-
-            }else
-
-
-            //cuando ya no sea la primer palabra confirmadaxd
-            if (intentos >= 0 && intentos<3)//si es la palabra que deseamos ingresar, segundo o tercer intento
-            {
-                palabra = "";
-                palabra = txt_noconfirmado.Text;
-                txt_noconfirmado.Text = "";
-                
-                this.txt_noconfirmado.Focus();
-                aleatorio = numerosAleatorios();
-                this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
-                this.Invoke(new Action(() => {
-                    pb_confirmado.Refresh();
-                }));
-                if (palabra_inicial.Equals(palabra) && confirmadaPalabra.Equals(txt_confirmado.Text))
-                {
-                        lblErrorMessagge.Visible = false;
-                        txt_confirmado.Text = "";
-                        intentos--;
-                }
-                else
-                {
-                        txt_confirmado.Text = "";
-                        msgError("Error... las palabras no coinciden, Inicie nuevamente ");
-
-                    intentos = 3;
-                }
-
+                return false;
             }
-        }//Si preciona que no 
             else
             {
-                aleatorio = numerosAleatorios();
-                this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
-                this.Invoke(new Action(() => {
-                    pb_confirmado.Refresh();
-                }));
-                txt_noconfirmado.Text = "";
-                txt_confirmado.Text = "";
-
+                return true;
             }
+        }
+        private void btn_comprobar_Click(object sender, EventArgs e)
+        {
+            this.lblConfirmada.Visible = false;
+            if (validacion())
+            {
+                //comprobacion 
+                //es como joptionpane, dialogo de confirmacion de si y nop
+                DialogResult dialogResult;
+                string confirmadaPalabra = "";
+                confirmadaPalabra = palabras_confirmadas[aleatorio + 1].ToString();
+                dialogResult = MessageBox.Show("Es esta la palabra que desea confirmar?..." + txt_noconfirmado.Text + " Y " + txt_confirmado.Text, "Confirmacion", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    if (intentos == 3)//pimer ntento
+                    {
+                        palabra_inicial = "";
+                        palabra_inicial = txt_noconfirmado.Text;
+                        txt_noconfirmado.Text = "";
+
+                        if (confirmadaPalabra.Equals(txt_confirmado.Text))
+                        {
+                            txt_confirmado.Text = "";
+                            intentos--;
+                            this.txt_noconfirmado.Focus();
+                            aleatorio = numerosAleatorios();
+                            this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                            this.Invoke(new Action(() =>
+                            {
+                                pb_confirmado.Refresh();
+                            }));
+                            lblErrorMessagge.Visible = false;
+                            progressBar1.Value += 1;
+                        }
+                        else
+                        {
+                            aleatorio = numerosAleatorios();
+                            this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                            this.Invoke(new Action(() =>
+                            {
+                                pb_confirmado.Refresh();
+                            }));
+                            txt_confirmado.Text = "";
+                            msgError("Error... las palabras no coinciden, Inicie nuevamente 1");
+                            this.txt_noconfirmado.Focus();
+
+
+                            intentos = 3;
+                        }
+
+
+                    }
+                    else
+
+
+                    //cuando ya no sea la primer palabra confirmadaxd
+                    if (intentos >= 0 && intentos < 3)//si es la palabra que deseamos ingresar, segundo o tercer intento
+                    {
+                        palabra = "";
+                        palabra = txt_noconfirmado.Text;
+                        txt_noconfirmado.Text = "";
+
+                        this.txt_noconfirmado.Focus();
+                        aleatorio = numerosAleatorios();
+                        this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                        this.Invoke(new Action(() =>
+                        {
+                            pb_confirmado.Refresh();
+                        }));
+                        if (palabra_inicial.Equals(palabra) && confirmadaPalabra.Equals(txt_confirmado.Text))
+                        {
+                            lblErrorMessagge.Visible = false;
+                            txt_confirmado.Text = "";
+                            intentos--;
+                            progressBar1.Value += 1;
+                            this.txt_noconfirmado.Focus();
+                        }
+                        else
+                        {
+                            txt_confirmado.Text = "";
+                            msgError("Error... las palabras no coinciden, Inicie nuevamente ");
+                            this.txt_noconfirmado.Focus();
+                            intentos = 3;
+                        }
+
+                    }
+                }//Si preciona que no 
+                else
+                {
+                    aleatorio = numerosAleatorios();
+                    this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                    this.Invoke(new Action(() =>
+                    {
+                        pb_confirmado.Refresh();
+                    }));
+                    txt_noconfirmado.Text = "";
+                    txt_confirmado.Text = "";
+                    this.txt_noconfirmado.Focus();
+                }
 
                 if (intentos == 0)//termina de confirmar palabra
                 {
-                lblErrorMessagge.Visible = false;
-                this.txt_noconfirmado.Focus();
-                string mensaje="";
-                    MessageBox.Show("Palabra confirmada");
-                int KeyNueva = 0;
-                KeyNueva = Keys();
-                palabras_confirmadas.Add(KeyNueva, palabra_inicial) ;
-                Actualizar(KeyNueva, palabra_inicial);
-                EscribirFactura(FragmentosMostrados,palabra_inicial);
-                FragmentosMostrados++;
-                    for (int i=1;i<=palabras_confirmadas.Count;i++)
-                    {
-                        mensaje += "\n"+palabras_confirmadas[i].ToString();
-                    }
-                MessageBox.Show(mensaje);
-                GenerarImagenes();
-                if (Fragmentos2.Count!=0)
+                    lblErrorMessagge.Visible = false;
+                    this.txt_noconfirmado.Focus();
+                    msgconfirmada("Palabra confirmada");
+                    int KeyNueva = 0;
+                    KeyNueva = Keys();
+                    palabras_confirmadas.Add(KeyNueva, palabra_inicial);
+                    Actualizar(KeyNueva, palabra_inicial);
+                    EscribirFactura(FragmentosMostrados, palabra_inicial);
+                    FragmentosMostrados++;
+                    GenerarImagenes();
+                    if (Fragmentos2.Count != 0)
                     {
                         this.pb_noconfirmado.Image = Fragmentos2.Dequeue();
-                    aleatorio = numerosAleatorios();
-                    this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
-                    this.Invoke(new Action(() => {
+                        aleatorio = numerosAleatorios();
+                        this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                        this.Invoke(new Action(() =>
+                        {
                             pb_noconfirmado.Refresh();
-                        pb_confirmado.Refresh();
+                            pb_confirmado.Refresh();
                         }));
-                    progressBar1.Value += 1;
-                    //se regresan los intentos por cada nueva palabra
-                    intentos = 3;
+                        progressBar1.Value += 1;
+                        this.txt_noconfirmado.Focus();
+                        //se regresan los intentos por cada nueva palabra
+                        intentos = 3;
                     }
                     else
                     {
-                    EscribirFacturaSeparador();
+                        EscribirFacturaSeparador();
                         //cerrar formulario actual
                         this.Close();
                     }
                 }
-         
+            }
+            else
+            {
+                MessageBox.Show("Coloque las palabras porfavor");
+                this.txt_noconfirmado.Focus();
+            }
             
            
             
@@ -263,7 +284,7 @@ namespace Presentacion
         //ESCRIBE LA FACTURA SEGUN LAS PALABRAS QUE SE VAN CONFIRMANDO
         private void EscribirFactura(int fragmentosMostrados, string palabra_inicial)
         {
-            TextWriter sw = new StreamWriter("Facturas.txt",true);
+            TextWriter sw = new StreamWriter(Path.GetTempPath() + "Facturas.txt",true);
             if (fragmentosMostrados == 1)
             {
                 sw.Write("NIT: "+palabra_inicial + '\t' + '\t' + '\t');
@@ -292,7 +313,7 @@ namespace Presentacion
         //ESCRIBE UN SEPARADOR SENCILLO PARA MEJORAR LA LECTURA DE CADA FACTURA EN EL MONITOR
         private void EscribirFacturaSeparador()
         {
-            TextWriter sw = new StreamWriter("Facturas.txt", true);
+            TextWriter sw = new StreamWriter(Path.GetTempPath() + "Facturas.txt", true);
             
             
                 sw.WriteLine("=======================================");
@@ -305,7 +326,7 @@ namespace Presentacion
             char[] delimiterChars = { '.' };
             //img.png->nombre[0]=img;nombre[1]=png;
             string[] nombre = Nombre.Split(delimiterChars);
-            TextWriter sw = new StreamWriter("Facturas.txt", true);
+            TextWriter sw = new StreamWriter(Path.GetTempPath() + "Facturas.txt", true);
 
 
             sw.WriteLine("Factura: "+nombre[0]);
@@ -321,7 +342,7 @@ namespace Presentacion
         //ACTUALIZA EL ARCHIVO DE PALABRAS CONFIRMADAS
         private void Actualizar(int keyConfirmada,string valueConfirmado)
         {
-            TextWriter sw = new StreamWriter("PalabrasConfirmadas.txt", true);
+            TextWriter sw = new StreamWriter(Path.GetTempPath() + "PalabrasConfirmadas.txt", true);
             sw.WriteLine(keyConfirmada);
             sw.WriteLine(valueConfirmado);
             sw.Close();
@@ -332,6 +353,12 @@ namespace Presentacion
             lblErrorMessagge.Text = "      " + msg;
             lblErrorMessagge.Visible = true;
             
+        }
+        private void msgconfirmada(string msg)
+        {
+            lblConfirmada.Text = "      " + msg;
+            lblConfirmada.Visible = true;
+
         }
     }
 }

@@ -126,7 +126,7 @@ namespace Presentacion
         private bool ExisteyActivo(string us)
         {
             Users obj1 = new Users();
-            TextReader sr = new StreamReader("Users.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "Users.txt");
             obj1.User = sr.ReadLine();
 
             while (obj1.User != null)
@@ -147,7 +147,7 @@ namespace Presentacion
         private void RegistradoyDesactivado(string us, string pass)
         {
             Users obj1 = new Users();
-            TextWriter sr = new StreamWriter("Users.txt",true);
+            TextWriter sr = new StreamWriter(Path.GetTempPath() + "Users.txt",true);
             sr.WriteLine(us);
 
 

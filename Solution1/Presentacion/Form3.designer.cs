@@ -48,11 +48,11 @@
             // textBox1
             // 
             this.textBox1.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Bold);
-            this.textBox1.Location = new System.Drawing.Point(127, 56);
+            this.textBox1.Location = new System.Drawing.Point(127, 11);
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(576, 369);
+            this.textBox1.Size = new System.Drawing.Size(576, 443);
             this.textBox1.TabIndex = 9;
             // 
             // fileSystemWatcher1

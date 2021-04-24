@@ -43,6 +43,7 @@ namespace Presentacion
             this.lineShape2 = new Microsoft.VisualBasic.PowerPacks.LineShape();
             this.lblErrorMessagge = new System.Windows.Forms.Label();
             this.btnminimizar = new System.Windows.Forms.PictureBox();
+            this.lblConfirmada = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pb_confirmado)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_noconfirmado)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnminimizar)).BeginInit();
@@ -130,7 +131,7 @@ namespace Presentacion
             // 
             // progressBar1
             // 
-            this.progressBar1.Location = new System.Drawing.Point(1, 326);
+            this.progressBar1.Location = new System.Drawing.Point(0, 325);
             this.progressBar1.Name = "progressBar1";
             this.progressBar1.Size = new System.Drawing.Size(534, 14);
             this.progressBar1.Step = 1;
@@ -155,7 +156,7 @@ namespace Presentacion
             this.shapeContainer1.Shapes.AddRange(new Microsoft.VisualBasic.PowerPacks.Shape[] {
             this.lineShape2,
             this.lineShape1});
-            this.shapeContainer1.Size = new System.Drawing.Size(536, 342);
+            this.shapeContainer1.Size = new System.Drawing.Size(536, 351);
             this.shapeContainer1.TabIndex = 8;
             this.shapeContainer1.TabStop = false;
             // 
@@ -175,7 +176,7 @@ namespace Presentacion
             this.lblErrorMessagge.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.lblErrorMessagge.Image = ((System.Drawing.Image)(resources.GetObject("lblErrorMessagge.Image")));
             this.lblErrorMessagge.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblErrorMessagge.Location = new System.Drawing.Point(62, 218);
+            this.lblErrorMessagge.Location = new System.Drawing.Point(62, 206);
             this.lblErrorMessagge.Name = "lblErrorMessagge";
             this.lblErrorMessagge.Size = new System.Drawing.Size(408, 32);
             this.lblErrorMessagge.TabIndex = 10;
@@ -195,12 +196,27 @@ namespace Presentacion
             this.btnminimizar.TabStop = false;
             this.btnminimizar.Click += new System.EventHandler(this.btnminimizar_Click_1);
             // 
+            // lblConfirmada
+            // 
+            this.lblConfirmada.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblConfirmada.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lblConfirmada.Image = ((System.Drawing.Image)(resources.GetObject("lblConfirmada.Image")));
+            this.lblConfirmada.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblConfirmada.Location = new System.Drawing.Point(62, 238);
+            this.lblConfirmada.Name = "lblConfirmada";
+            this.lblConfirmada.Size = new System.Drawing.Size(408, 32);
+            this.lblConfirmada.TabIndex = 12;
+            this.lblConfirmada.Text = "Error";
+            this.lblConfirmada.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblConfirmada.Visible = false;
+            // 
             // Captcha
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(39)))), ((int)(((byte)(57)))), ((int)(((byte)(80)))));
-            this.ClientSize = new System.Drawing.Size(536, 342);
+            this.ClientSize = new System.Drawing.Size(536, 351);
+            this.Controls.Add(this.lblConfirmada);
             this.Controls.Add(this.btnminimizar);
             this.Controls.Add(this.lblErrorMessagge);
             this.Controls.Add(this.progressBar1);
@@ -215,6 +231,7 @@ namespace Presentacion
             this.Cursor = System.Windows.Forms.Cursors.Default;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Captcha";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Captcha";
             ((System.ComponentModel.ISupportInitialize)(this.pb_confirmado)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pb_noconfirmado)).EndInit();
@@ -239,5 +256,6 @@ namespace Presentacion
         private Microsoft.VisualBasic.PowerPacks.LineShape lineShape2;
         private System.Windows.Forms.Label lblErrorMessagge;
         private System.Windows.Forms.PictureBox btnminimizar;
+        private System.Windows.Forms.Label lblConfirmada;
     }
 }

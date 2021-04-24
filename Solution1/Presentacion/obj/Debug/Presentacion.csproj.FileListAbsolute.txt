@@ -20,7 +20,6 @@ R:\Login C#\Nueva carpeta\Solution1\Presentacion\obj\Debug\Presentacion.pdb
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\Presentacion.exe.config
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\Presentacion.exe
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\Presentacion.pdb
-R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.csprojAssemblyReference.cache
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.Captcha.resources
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.Diccionario.resources
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.Form1.resources
@@ -37,3 +36,8 @@ R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\FontAwesome.Sharp.dll
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\FontAwesome.Sharp.Pro.dll
 R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.Registro.resources
+R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.csprojAssemblyReference.cache
+R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\Presentacion.exe.manifest
+R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug\Presentacion.application
+R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.exe.manifest
+R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\obj\Debug\Presentacion.application

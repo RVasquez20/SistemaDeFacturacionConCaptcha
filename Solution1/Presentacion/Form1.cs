@@ -43,12 +43,12 @@ namespace Presentacion
         //INDICAMOS DONDE ESTA ALMACENADO EL ARCHIVO QUE ESCUCHARA EL FILESYSTEMWATCHER
         private void Form1_Load(object sender, EventArgs e)
         {
-            fileSystemWatcher1.Path = @"R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug";
+            fileSystemWatcher1.Path = Path.GetTempPath() ;
 
             listBox1.Items.Clear();
             ArrayList a1 = new ArrayList();
             string l;
-            TextReader sr = new StreamReader("Users.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "Users.txt");
             l = sr.ReadLine();
             a1.Add(l);
             while (l != null)
@@ -74,7 +74,7 @@ namespace Presentacion
             listBox1.Items.Clear();
             ArrayList a1 = new ArrayList();
             string l;
-            TextReader sr = new StreamReader("Users.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "Users.txt");
             l = sr.ReadLine();
             a1.Add(l);
             while (l != null)
@@ -119,7 +119,7 @@ namespace Presentacion
                 {
                     Linea[listBox1.SelectedIndex] = "Activo";
 
-                    TextWriter sr = new StreamWriter(@"Users.txt");
+                    TextWriter sr = new StreamWriter(Path.GetTempPath() + "Users.txt");
                     foreach (string item in Linea)
                     {
                         if (item != null)
@@ -133,7 +133,7 @@ namespace Presentacion
                 {
                     Linea[listBox1.SelectedIndex] = "Inactivo";
 
-                    TextWriter sr = new StreamWriter(@"Users.txt");
+                    TextWriter sr = new StreamWriter(Path.GetTempPath() + "Users.txt");
                     foreach (string item in Linea)
                     {
                         if (item != null)

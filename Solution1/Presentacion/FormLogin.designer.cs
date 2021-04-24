@@ -72,11 +72,13 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.ImageLocation = "R:\\Login C#\\Logo.png";
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.ImageLocation = "";
             this.pictureBox1.InitialImage = ((System.Drawing.Image)(resources.GetObject("pictureBox1.InitialImage")));
             this.pictureBox1.Location = new System.Drawing.Point(36, 21);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(180, 132);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
@@ -174,7 +176,7 @@
             this.linkpass.AutoSize = true;
             this.linkpass.Font = new System.Drawing.Font("Century Gothic", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.linkpass.LinkColor = System.Drawing.Color.DarkGray;
-            this.linkpass.Location = new System.Drawing.Point(411, 282);
+            this.linkpass.Location = new System.Drawing.Point(411, 293);
             this.linkpass.Name = "linkpass";
             this.linkpass.Size = new System.Drawing.Size(205, 17);
             this.linkpass.TabIndex = 0;
@@ -212,7 +214,7 @@
             this.lblErrorMessagge.ForeColor = System.Drawing.Color.DarkGray;
             this.lblErrorMessagge.Image = ((System.Drawing.Image)(resources.GetObject("lblErrorMessagge.Image")));
             this.lblErrorMessagge.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblErrorMessagge.Location = new System.Drawing.Point(310, 179);
+            this.lblErrorMessagge.Location = new System.Drawing.Point(310, 186);
             this.lblErrorMessagge.Name = "lblErrorMessagge";
             this.lblErrorMessagge.Size = new System.Drawing.Size(408, 32);
             this.lblErrorMessagge.TabIndex = 9;

@@ -16,7 +16,7 @@ namespace Presentacion
         {
             InitializeComponent();
             //AL INICIALIZACE SE LEE TODO EL DOCUMENTO DE FACTURAS PARA POSTERIORMENTE MOSTRARLO EN EL MONITOR
-            TextReader sr = new StreamReader("Facturas.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "Facturas.txt");
             string Mensaje = "";
             Mensaje = sr.ReadToEnd();
             sr.Close();
@@ -33,7 +33,7 @@ namespace Presentacion
         private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
             textBox1.Text = "";
-            TextReader sr = new StreamReader("Facturas.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "Facturas.txt");
             string Mensaje = "";
             Mensaje = sr.ReadToEnd();
             sr.Close();
@@ -42,7 +42,7 @@ namespace Presentacion
         //INDICAMOS DONDE ESTA ALMACENADO EL ARCHIVO QUE ESCUCHARA EL FILESYSTEMWATCHER
         private void Form3_Load(object sender, EventArgs e)
         {
-            fileSystemWatcher1.Path = @"R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug";
+            fileSystemWatcher1.Path =Path.GetTempPath();
         }
     }
 }

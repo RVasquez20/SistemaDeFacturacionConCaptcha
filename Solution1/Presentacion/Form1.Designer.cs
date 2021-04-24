@@ -48,9 +48,9 @@
             // listBox1
             // 
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(200, 69);
+            this.listBox1.Location = new System.Drawing.Point(215, 21);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(406, 368);
+            this.listBox1.Size = new System.Drawing.Size(406, 446);
             this.listBox1.TabIndex = 15;
             this.listBox1.DoubleClick += new System.EventHandler(this.listBox1_DoubleClick);
             // 

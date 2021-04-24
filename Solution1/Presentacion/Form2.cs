@@ -17,7 +17,7 @@ namespace Presentacion
         {
             InitializeComponent();
             //LEE EL ARCHIVO PALABRAS CONFIRMADAS Y ALMACENA LOS DATOS EN UN OBJETO
-            TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "PalabrasConfirmadas.txt");
             PalabrasConfirmadas PC = new PalabrasConfirmadas();
             PC.palabrasConfirmadas = new Hashtable();
             string Keys = "", Values = "";
@@ -49,7 +49,7 @@ namespace Presentacion
         //POSTERIORMENTE ACTUALIZA EL TEXTBOX Y ASI SE CONSIGUE MOSTRARLO EN TIEMPO REAL
         private void fileSystemWatcher1_Changed(object sender, System.IO.FileSystemEventArgs e)
         {
-            TextReader sr = new StreamReader("PalabrasConfirmadas.txt");
+            TextReader sr = new StreamReader(Path.GetTempPath() + "PalabrasConfirmadas.txt");
              PalabrasConfirmadas PC = new PalabrasConfirmadas();
              PC.palabrasConfirmadas = new Hashtable();
              string Keys = "", Values = "";
@@ -75,7 +75,7 @@ namespace Presentacion
         //INDICAMOS DONDE ESTA ALMACENADO EL ARCHIVO QUE ESCUCHARA EL FILESYSTEMWATCHER
         private void Form2_Load(object sender, EventArgs e)
         {
-            fileSystemWatcher1.Path = @"R:\Login C#\Nueva carpeta\SistemaDeFacturacionConCaptcha\Solution1\Presentacion\bin\Debug";
+            fileSystemWatcher1.Path = Path.GetTempPath() ;
         }
     }
 }
