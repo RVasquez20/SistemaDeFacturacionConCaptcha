@@ -13,7 +13,7 @@ namespace Presentacion
     {
         //arroba--quitar los caracteres especialesc:
         //VARIABLE QUE ALMACENA EL PATH DE LA FACTURA ELEGIDA
-        string PATH = "";
+       // string PATH = "";
         public Diccionario()
         {
             InitializeComponent();
@@ -25,17 +25,30 @@ namespace Presentacion
         //FRAGMENTOS DE LA IMAGEN A CONFIRMAR
         private void button1_Click(object sender, EventArgs e)
         {
+            Queue<string> direcciones = new Queue<String>();
+            Queue<Queue<Bitmap>> Listado = new Queue<Queue<Bitmap>>();
             OpenFileDialog getImage = new OpenFileDialog();
             getImage.InitialDirectory = "C:\\";
-            getImage.Filter = "Archivos de Imagen (*.png)|*png;";
+            getImage.Filter = "Archivos de Imagen (*.jpg)|*jpg;";
             getImage.Title = "Selecciona la Factura";
-            PATH = "";
+            getImage.Multiselect = true;
+            //PATH = "";
             if(getImage.ShowDialog() == DialogResult.OK)
             {
+                foreach (string item in getImage.FileNames)
+                {
+                    direcciones.Enqueue(item);
+
+                }
+                foreach (string item in direcciones)
+                {
+
+                    Listado.Enqueue(imagenes(item));
+                }
                 //concatenacion de la ruta del archivo hacia el path para poder ir a cortar la imagen
-                PATH+= getImage.FileName;
-               
-                Captcha form2 = new Captcha(imagenes(), getImage.SafeFileName);
+                //PATH+= getImage.FileName;
+
+                Captcha form2 = new Captcha(Listado, direcciones);
                 form2.Show();
             }
             else
@@ -54,7 +67,7 @@ namespace Presentacion
             return bmp;
         }
         //RECORTA LA IMAGEN EN CIERTA ALTURA Y ANCHO PARA CADA FRAGMENTO Y EL FRAGMENTO CORTADO LO GUARDA EN UNA COLA QUE SE RETORNA
-        public Queue<Bitmap> imagenes()
+        public Queue<Bitmap> imagenes(string @PATH)
         {
             //Cola-queue :v 
             Queue<Bitmap> Lista = new Queue<Bitmap>();
@@ -67,7 +80,7 @@ namespace Presentacion
            // MessageBox.Show(altoSteps.ToString()); esos dos no afectan va? xd
             //MessageBox.Show((source.Width / 200).ToString());
             //cambiar el 4 por altoSteps 
-            for (int i = 0; i <= altoSteps; i++)
+            for (int i = 0; i < altoSteps; i++)
             {
                 posXmin = 0;
                 for (int j = 0; j < (source.Width / 200); j++)

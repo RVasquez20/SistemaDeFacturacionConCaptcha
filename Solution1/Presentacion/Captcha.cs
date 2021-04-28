@@ -19,7 +19,7 @@ namespace Presentacion
     {
         
         
-        string palabra_inicial="",palabra="",palabraConfirmada="",palabraIngresadaConfirmada="";
+        string palabra_inicial="",palabra="",palabraConfirmada="",palabraIngresadaConfirmada="",NombreIMG="";
         //para los 3 intentos sistema
         int intentos=3,aleatorio=0,FragmentosMostrados=0;
         System.Collections.Hashtable palabras_confirmadas = new System.Collections.Hashtable();
@@ -27,9 +27,10 @@ namespace Presentacion
             //guid=para que los archivos no sean iguales, segundos y fechas xd
         Queue<Bitmap> Fragmentos2 = new Queue<Bitmap>();
         ArrayList FragmentosConfirmados = new ArrayList();
-                
+        Queue<String> direcciones = new Queue<String>();
+        Queue<Queue<Bitmap>> Listado = new Queue<Queue<Bitmap>>();
         //recibir cola con todos los fragmentos
-        public Captcha(Queue<Bitmap>Fragmentos,string NombreIMG)
+        public Captcha(Queue<Queue<Bitmap>> Fragmentos, Queue<string> NombreIMGs)
         {
 
             InitializeComponent();
@@ -41,7 +42,8 @@ namespace Presentacion
             //GENERA IMAGENES DE EL ARRAY DE PALABRAS CONFIRMADAS
             GenerarImagenes();
             //global para usarlo en eventos
-            Fragmentos2 = Fragmentos;
+            Listado = Fragmentos;
+            Fragmentos2 = Listado.Dequeue() ;
             //establecer primer fragmento de la cola en el pb_noconfirmado
             pb_noconfirmado.Image = Fragmentos2.Dequeue();
             aleatorio = numerosAleatorios();
@@ -49,6 +51,8 @@ namespace Presentacion
             FragmentosMostrados++;
             this.txt_noconfirmado.Focus();
             //ESCRIBE EL NOMBRE DE LA IMAGEN COMO NOMBRE DE LA FACTURA
+            direcciones = NombreIMGs;
+            NombreIMG = direcciones.Dequeue();
             EscribirNombreDeFactura(NombreIMG);
 
 
@@ -169,7 +173,7 @@ namespace Presentacion
                                 pb_confirmado.Refresh();
                             }));
                             lblErrorMessagge.Visible = false;
-                            progressBar1.Value += 1;
+                           // progressBar1.Value += 1;
                         }
                         else
                         {
@@ -211,11 +215,12 @@ namespace Presentacion
                             lblErrorMessagge.Visible = false;
                             txt_confirmado.Text = "";
                             intentos--;
-                            progressBar1.Value += 1;
+                            //progressBar1.Value += 1;
                             this.txt_noconfirmado.Focus();
                         }
                         else
                         {
+                            //cambiarlo para que quede como p3 y agregar el escribir nombre
                             txt_confirmado.Text = "";
                             msgError("Error... las palabras no coinciden, Inicie nuevamente ");
                             this.txt_noconfirmado.Focus();
@@ -259,16 +264,35 @@ namespace Presentacion
                             pb_noconfirmado.Refresh();
                             pb_confirmado.Refresh();
                         }));
-                        progressBar1.Value += 1;
+                        //progressBar1.Value += 1;
                         this.txt_noconfirmado.Focus();
                         //se regresan los intentos por cada nueva palabra
                         intentos = 3;
                     }
                     else
                     {
-                        EscribirFacturaSeparador();
-                        //cerrar formulario actual
-                        this.Close();
+                        if (Fragmentos2.Count == 0 && Listado.Count != 0)
+                        {
+                            EscribirFacturaSeparador();
+                            NombreIMG = "";
+                            NombreIMG = direcciones.Dequeue();
+                            EscribirNombreDeFactura(NombreIMG);
+                            Fragmentos2.Clear();
+                            Fragmentos2 = Listado.Dequeue();
+                            aleatorio = numerosAleatorios();
+                            this.pb_noconfirmado.Image = Fragmentos2.Dequeue();
+                            this.pb_confirmado.Image = (Image)FragmentosConfirmados[aleatorio];
+                            FragmentosMostrados=0;
+                            FragmentosMostrados++;
+                            this.Invoke(new Action(() => { pb_noconfirmado.Refresh(); pb_confirmado.Refresh(); }));
+                            intentos = 3;
+                        }
+                        else
+                        {
+                            EscribirFacturaSeparador();
+                            //cerrar formulario actual
+                            this.Close();
+                        }
                     }
                 }
             }
@@ -323,13 +347,15 @@ namespace Presentacion
         //QUITA LA EXTENSION DE LA IMAGEN Y ESCRIBE SOLO EL NOMBRE COMO NOMBRE DE FACTURA
         private void EscribirNombreDeFactura(string Nombre)
         {
-            char[] delimiterChars = { '.' };
+            char[] delimiterChars = { '.', '\\' };
             //img.png->nombre[0]=img;nombre[1]=png;
             string[] nombre = Nombre.Split(delimiterChars);
+            int cantidad = 0;
+            cantidad = nombre.Length;
             TextWriter sw = new StreamWriter(Path.GetTempPath() + "Facturas.txt", true);
 
 
-            sw.WriteLine("Factura: "+nombre[0]);
+            sw.WriteLine("Factura: "+nombre[cantidad-2]);
 
             sw.Close();
         }

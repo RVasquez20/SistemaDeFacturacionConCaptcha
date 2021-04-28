@@ -1,3 +1,0 @@
-Factura: 007
-NIT: 123123
-Fecha: abril
